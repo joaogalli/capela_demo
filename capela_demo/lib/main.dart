@@ -2,11 +2,11 @@ import 'package:capela_demo/ui/about_page.dart';
 import 'package:capela_demo/ui/create_event_page.dart';
 import 'package:capela_demo/ui/events_page.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() => runApp(CapelaDemoApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class CapelaDemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,8 +14,26 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: SplashScreen(),
     );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Timer(Duration(seconds: 3), () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    });
+
+    return Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child: Center(
+          child: Text(
+            "Splash Screen",
+            style: TextStyle(color: Colors.black),
+          ),
+        ));
   }
 }
 
@@ -28,11 +46,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    AboutPage(),
-    EventsPage(),
-    CreateEventPage()
-  ];
+  final List<Widget> _children = [AboutPage(), EventsPage(), CreateEventPage()];
 
   void onTabTapped(int index) {
     setState(() {
