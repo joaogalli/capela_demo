@@ -1,8 +1,12 @@
+import 'package:capela_demo/constants/images.dart';
 import 'package:capela_demo/ui/about_page.dart';
-import 'package:capela_demo/ui/create_event_page.dart';
+import 'package:capela_demo/ui/news_list.dart';
+import 'package:capela_demo/ui/settings_page.dart';
 import 'package:capela_demo/ui/events_page.dart';
+import 'package:capela_demo/ui/principal_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 void main() => runApp(CapelaDemoApp());
 
@@ -22,18 +26,29 @@ class CapelaDemoApp extends StatelessWidget {
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 5), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     });
 
+    SystemChrome.setEnabledSystemUIOverlays([]);
+
     return Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: Center(
-          child: Text(
-            "Splash Screen",
-            style: TextStyle(color: Colors.black),
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.fitHeight,
+              colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.7), BlendMode.colorDodge),
+              image: AssetImage(Images.SPLASH_BG))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Container(child: Image.asset(Images.LOGO_CAPELA)),
           ),
-        ));
+        ],
+      ),
+    );
   }
 }
 
@@ -46,7 +61,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  final List<Widget> _children = [AboutPage(), EventsPage(), CreateEventPage()];
+  final List<Widget> _children = [
+    PrincipalPage(),
+    AboutPage(),
+    EventsPage(),
+    NewsListPage(),
+    SettingsPage()
+  ];
 
   void onTabTapped(int index) {
     setState(() {
@@ -56,24 +77,38 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0.3,
         title: Text(
-          'Capela Unicesumar',
+          'Capela Cristã Unicesumar',
           style: TextStyle(color: Colors.black, fontFamily: 'Arvo'),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: null,
+            iconSize: 32,
+          )
+        ],
       ),
       body: Container(child: _children[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         // this will be set when a new tab is tapped
         onTap: onTabTapped,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
+            title: Text('Principal'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.edit),
             title: Text('Sobre'),
           ),
           BottomNavigationBarItem(
@@ -81,7 +116,11 @@ class _HomeState extends State<Home> {
             title: new Text('Eventos'),
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_box), title: Text('Adicionar'))
+            icon: new Icon(Icons.list),
+            title: new Text('Notícias'),
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), title: Text('Opções'))
         ],
       ),
     );

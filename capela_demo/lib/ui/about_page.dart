@@ -1,3 +1,4 @@
+import 'package:capela_demo/constants/images.dart';
 import 'package:capela_demo/ui/capela_images.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,8 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   List<String> images = [
-    'https://www.unicesumar.edu.br/capela2/wp-content/uploads/sites/189/2018/08/DJI_0296-1024x683.jpg',
-    'https://www.unicesumar.edu.br/capela2/wp-content/uploads/sites/189/2018/08/DJI_0307-1024x683-1.jpg'
+    Images.CAPELA_EXTERNO_01,
+    Images.CAPELA_EXTERNO_02
   ];
 
   TextStyle bodyTextStyle = TextStyle(color: Colors.grey[600], fontFamily: 'Arvo');
@@ -78,7 +79,7 @@ class _AboutPageState extends State<AboutPage> {
       onTap: imageTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Image.network(
+        child: Image.asset(
           images[image],
         ),
       ),
